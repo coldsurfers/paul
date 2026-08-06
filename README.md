@@ -25,8 +25,8 @@ paul/
 │   ├── coldsurf-domain/     # COLDSURF 도메인 · 로드맵 · 편집 페르소나
 │   └── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
 └── commands/
-    ├── spec.md              # /spec — 스펙 파일 생성
-    └── step.md              # /step — 다음 스텝 실행 + 검증
+    ├── spec.md              # /paul:spec — 스펙 파일 생성
+    └── step.md              # /paul:step — 다음 스텝 실행 + 검증
 ```
 
 ## 설치
