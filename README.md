@@ -8,6 +8,8 @@ Paul Choi 로서 생각하고, 설계하고, 코딩하기 위한 **Claude Code �
 
 ```
 paul/
+├── AGENTS.md                # 이 레포를 편집할 때의 작업 규약
+├── CLAUDE.md                # → @AGENTS.md
 ├── .claude-plugin/
 │   ├── plugin.json          # 플러그인 매니페스트
 │   └── marketplace.json     # 로컬 마켓플레이스 등록용
