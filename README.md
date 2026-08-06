@@ -31,29 +31,23 @@ paul/
 
 ## 설치
 
-### A. 플러그인 (권장)
-
 ```bash
-# Claude Code 안에서
-/plugin marketplace add /Volumes/T7/dev/paul
-/plugin install paul@paul
+claude plugin marketplace add coldsurfers/paul
+claude plugin install paul@paul
 ```
 
-### B. 심볼릭 링크 (기존 `~/.agents` 방식과 동일)
+디바이스가 여러 대라 심볼릭 링크는 쓰지 않는다 — 절대경로가 디바이스마다 달라 깨진다.
+
+### 편집은 즉시 반영되지 않는다
+
+설치본은 `~/.claude/plugins/cache/paul/paul/<version>/` 로 **복사되는 스냅샷**이다. 마켓플레이스를 로컬 경로로 걸어도(`claude plugin marketplace add ~/dev/paul`) 마찬가지 — 라이브가 아니다. 자산을 고쳤으면:
 
 ```bash
-ln -s /Volumes/T7/dev/paul/agents/paul.md          ~/.claude/agents/paul.md
-ln -s /Volumes/T7/dev/paul/agents/paul-planner.md  ~/.claude/agents/paul-planner.md
-ln -s /Volumes/T7/dev/paul/agents/paul-reviewer.md ~/.claude/agents/paul-reviewer.md
-ln -s /Volumes/T7/dev/paul/skills/paul-rockstar    ~/.claude/skills/paul-rockstar
-# 나머지 스킬도 동일하게
+claude plugin marketplace update paul
+claude plugin uninstall paul@paul && claude plugin install paul@paul
 ```
 
-### C. 특정 레포에만
-
-```bash
-ln -s /Volumes/T7/dev/paul/agents  <repo>/.claude/agents
-```
+`claude plugin update` 는 버전 비교라 `plugin.json` 의 `version` 을 올리지 않으면 no-op 이다. 문서만 고칠 때마다 버전을 올릴 게 아니면 재설치가 맞다.
 
 ## 스킬 정본 관계
 
