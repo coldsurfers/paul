@@ -78,6 +78,19 @@ wc -l skills/*/SKILL.md                               # 500줄 제한
 python3 -m json.tool .claude-plugin/plugin.json > /dev/null
 ```
 
+### 고친 자산을 세션에 반영하기
+
+**이 레포를 고쳐도 세션은 안 바뀐다.** 플러그인 설치본은 `~/.claude/plugins/cache/paul/paul/<version>/` 로 복사되는 스냅샷이고, 세션은 그 복사본만 읽는다. 마켓플레이스를 로컬 경로로 걸어도 라이브가 아니다.
+
+```bash
+claude plugin marketplace update paul
+claude plugin uninstall paul@paul && claude plugin install paul@paul
+```
+
+`claude plugin update` 는 버전 비교라 `plugin.json` 의 `version` 을 안 올리면 no-op 이다. 그래서 재설치가 맞다.
+
+편집마다 돌릴 필요는 없다 — 여러 개 고친 뒤 마지막에 한 번. 다만 **하네스가 이상하면 문구를 다시 고치기 전에 캐시부터 의심한다.** 고쳤다고 믿는데 안 고쳐진 상태가 이 방식의 유일한 함정이다.
+
 ---
 
 ## 어디에 쓸 것인가

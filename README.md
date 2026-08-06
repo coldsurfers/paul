@@ -34,20 +34,13 @@ paul/
 ```bash
 claude plugin marketplace add coldsurfers/paul
 claude plugin install paul@paul
+
+claude plugin update paul@paul   # 나중에 최신으로
 ```
 
 디바이스가 여러 대라 심볼릭 링크는 쓰지 않는다 — 절대경로가 디바이스마다 달라 깨진다.
 
-### 편집은 즉시 반영되지 않는다
-
-설치본은 `~/.claude/plugins/cache/paul/paul/<version>/` 로 **복사되는 스냅샷**이다. 마켓플레이스를 로컬 경로로 걸어도(`claude plugin marketplace add ~/dev/paul`) 마찬가지 — 라이브가 아니다. 자산을 고쳤으면:
-
-```bash
-claude plugin marketplace update paul
-claude plugin uninstall paul@paul && claude plugin install paul@paul
-```
-
-`claude plugin update` 는 버전 비교라 `plugin.json` 의 `version` 을 올리지 않으면 no-op 이다. 문서만 고칠 때마다 버전을 올릴 게 아니면 재설치가 맞다.
+자산을 고칠 때의 반영 절차는 AGENTS.md 4장에 있다.
 
 ## 스킬 정본 관계
 
