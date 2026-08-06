@@ -8,11 +8,15 @@ Paul Choi 로서 생각하고, 설계하고, 코딩하기 위한 **Claude Code �
 
 ```
 paul/
-├── AGENTS.md                # 이 레포를 편집할 때의 작업 규약
+├── NORMS.md                 # 전역 행동 규범 — 매 세션 주입되는 정본
+├── AGENTS.md                # 이 레포를 편집할 때의 작업 규약 (+ @NORMS.md)
 ├── CLAUDE.md                # → @AGENTS.md
 ├── .claude-plugin/
 │   ├── plugin.json          # 플러그인 매니페스트
 │   └── marketplace.json     # 로컬 마켓플레이스 등록용
+├── hooks/
+│   ├── hooks.json           # SessionStart 훅 등록
+│   └── inject-norms.js      # NORMS.md 를 컨텍스트로 주입
 ├── agents/
 │   ├── paul.md              # 메인 — 실제로 만드는 사람
 │   ├── paul-planner.md      # Plan · Spec 작성 (읽기 전용)
@@ -39,6 +43,8 @@ claude plugin update paul@paul   # 나중에 최신으로
 ```
 
 디바이스가 여러 대라 심볼릭 링크는 쓰지 않는다 — 절대경로가 디바이스마다 달라 깨진다.
+
+설치하면 `NORMS.md` 가 **모든 레포의 매 세션에** 자동 주입된다. 기기별 `settings.json` 설정은 필요 없다.
 
 자산을 고칠 때의 반영 절차는 AGENTS.md 4장에 있다.
 

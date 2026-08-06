@@ -1,0 +1,15 @@
+{
+  "hooks": {
+    "SessionStart": [
+      {
+        "hooks": [
+          {
+            "type": "command",
+            "command": "node \"${CLAUDE_PLUGIN_ROOT}/hooks/inject-norms.js\""
+          }
+        ],
+        "description": "매 세션 시작 시 NORMS.md 전역 규범을 주입한다"
+      }
+    ]
+  }
+}
