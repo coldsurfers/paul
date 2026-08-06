@@ -46,6 +46,26 @@ claude plugin update paul@paul   # 나중에 최신으로
 
 설치하면 `NORMS.md` 가 **모든 레포의 매 세션에** 자동 주입된다. 기기별 `settings.json` 설정은 필요 없다.
 
+### 새 기기에서
+
+위 두 줄이 전부다. 다만 이 레포 이전의 설정이 남아 있는 기기라면 **중복 로딩되므로 아래를 지운다.**
+
+```bash
+rm -rf ~/dotfiles/.agents/skills/paul-rockstar   # 축 분리 전 모놀리식 스킬
+rm -f  ~/.claude/skills/paul-rockstar            # 위를 가리키던 심볼릭 링크
+rm -f  ~/dotfiles/AGENTS.md                      # NORMS.md 로 이관됨
+```
+
+`~/.claude/settings.json` 에 `paul-rockstar/SKILL.md` 를 읽는 `SessionStart` 훅이 있으면 함께 지운다 — 플러그인 훅과 겹친다.
+
+확인:
+
+```bash
+cd /tmp && claude -p "<paul-norms> 블록 있나?"
+```
+
+레포 밖에서 물어야 의미가 있다. 이 레포 안에서는 `CLAUDE.md → AGENTS.md → @NORMS.md` 로도 들어오므로 훅이 죽어도 붙어 보인다.
+
 자산을 고칠 때의 반영 절차는 AGENTS.md 4장에 있다.
 
 ## 스킬 정본 관계
@@ -61,7 +81,7 @@ claude plugin update paul@paul   # 나중에 최신으로
 | 무엇을 만드는가 | `coldsurf-domain` |
 | 어떤 결을 좋아하는가 | `paul-taste` |
 
-설치 후에는 기존 모놀리식 `paul-rockstar` 스킬을 제거해 중복 로딩을 막는다.
+기존 모놀리식 스킬 제거는 「새 기기에서」에 있다.
 
 ## 원칙
 
