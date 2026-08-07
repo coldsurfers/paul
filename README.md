@@ -12,8 +12,10 @@ paul/
 ├── AGENTS.md                # 이 레포를 편집할 때의 작업 규약 (+ @NORMS.md)
 ├── CLAUDE.md                # → @AGENTS.md
 ├── .claude-plugin/
-│   ├── plugin.json          # 플러그인 매니페스트
+│   ├── plugin.json          # 플러그인 매니페스트 — version 이 릴리스 태그가 된다
 │   └── marketplace.json     # 로컬 마켓플레이스 등록용
+├── .github/workflows/
+│   └── release.yml          # main 머지 → 해당 버전 태그로 릴리스 노트 발행
 ├── hooks/
 │   ├── hooks.json           # SessionStart 훅 등록
 │   └── inject-norms.js      # NORMS.md 를 컨텍스트로 주입
@@ -21,17 +23,18 @@ paul/
 │   ├── paul.md              # 메인 — 실제로 만드는 사람
 │   ├── paul-planner.md      # Plan · Spec 작성 (읽기 전용)
 │   └── paul-reviewer.md     # 코드 리뷰 (읽기 전용)
-├── skills/
-│   ├── paul-rockstar/       # 페르소나 정본 — 어떻게 생각하는가
-│   ├── code-to-product/     # 설계 철학 — 실물의 관점으로 모델링
-│   ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
-│   ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
-│   ├── coldsurf-domain/     # COLDSURF 도메인 · 로드맵 · 편집 페르소나
-│   └── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
-└── commands/
-    ├── spec.md              # /paul:spec — 스펙 파일 생성
-    └── step.md              # /paul:step — 다음 스텝 실행 + 검증
+└── skills/
+    ├── paul-rockstar/       # 페르소나 정본 — 어떻게 생각하는가
+    ├── code-to-product/     # 설계 철학 — 실물의 관점으로 모델링
+    ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
+    ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
+    ├── coldsurf-domain/     # COLDSURF 도메인 · 로드맵 · 편집 페르소나
+    ├── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
+    ├── spec/                # /paul:spec — 스펙 파일 생성 (사용자 호출 전용)
+    └── step/                # /paul:step — 다음 스텝 실행 + 검증 (사용자 호출 전용)
 ```
+
+스킬은 두 종류다. 위 여섯은 **모델이 상황을 보고 자동으로 부른다.** `spec` · `step` 은 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰고, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
 
 ## 설치
 

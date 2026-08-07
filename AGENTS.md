@@ -16,17 +16,18 @@
 
 | 바꾼 것 | 검증 |
 |---|---|
-| `skills/*/SKILL.md` | frontmatter `name` 이 디렉터리명과 같은가 · `description` 이 "언제 읽는지"를 말하는가 · 본문 500줄 이내인가 |
+| `skills/*/SKILL.md` | frontmatter `name` 이 디렉터리명과 같은가 · `description` 이 "무엇인지" · `when_to_use` 가 "언제 읽는지"를 말하는가 · 둘 합쳐 1,536자 이내인가 · 본문 500줄 이내인가 |
+| 사용자 호출 전용 스킬 (`spec` · `step`) | `disable-model-invocation: true` 가 있는가 · `$ARGUMENTS` 가 비어 있을 때의 동작이 정의됐는가 (`when_to_use` 는 불필요 — 리스팅에 안 들어간다) |
 | `agents/*.md` | frontmatter `name` 이 파일명과 같은가 · `tools` 가 그 역할에 필요한 최소인가 |
-| `commands/*.md` | `description` 이 있는가 · `$ARGUMENTS` 를 쓴다면 비어 있을 때의 동작이 정의됐는가 |
 | 자산 추가 · 삭제 · 이름 변경 | README 구조도와 실제 트리가 일치하는가 |
 | `.claude-plugin/*.json` | JSON 이 파싱되는가 · `plugin.json` 의 `name` 과 `marketplace.json` 의 `plugins[].name` 이 같은가 |
+| 자산을 고쳐 PR 을 낼 때 | `plugin.json` 의 `version` 을 올렸는가 — **main 머지 시 그 버전으로 릴리스가 나가고, 안 올리면 릴리스는 no-op 이다** |
 | `NORMS.md` · `hooks/*` | 훅이 단독 실행되는가 · 레포 전용 내용이 `NORMS.md` 에 새지 않았는가 |
 
 기계적으로 볼 수 있는 것:
 
 ```bash
-head -5 skills/*/SKILL.md agents/*.md commands/*.md   # frontmatter 훑기
+head -5 skills/*/SKILL.md agents/*.md                 # frontmatter 훑기
 wc -l skills/*/SKILL.md                               # 500줄 제한
 python3 -m json.tool .claude-plugin/plugin.json > /dev/null
 python3 -m json.tool hooks/hooks.json > /dev/null
@@ -56,13 +57,17 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 |---|---|
 | 어디서든 무조건 지켜야 하는 규범 | `NORMS.md` (매 세션 주입) |
 | 누구로서 판단하는가 (페르소나 · 권한 · 위임) | `agents/` |
-| 특정 상황에서만 필요한 지식 | `skills/` |
-| 사용자가 명시적으로 호출하는 절차 | `commands/` |
+| 특정 상황에서만 필요한 지식 | `skills/` — 모델 자동 발동 |
+| 사용자가 명시적으로 호출하는 절차 | `skills/` + `disable-model-invocation: true` |
 | 이 레포를 편집하는 규약 | 이 문서 |
 
 `NORMS.md` 는 매 세션 값을 치르므로 **비싸다.** 상황을 가리는 지식은 스킬로 내린다.
 
-**스킬은 축 하나에 하나다.** 현재 축 — `paul-rockstar`(어떻게 생각하는가) · `code-to-product`(어떻게 모델링하는가) · `agentic-workflow`(어떤 순서로) · `paul-stack`(무엇으로) · `coldsurf-domain`(무엇을) · `paul-taste`(어떤 결로). 새 스킬을 만들기 전에 **기존 축에 안 들어가는지 먼저 따진다.**
+자산은 `skills/` 하나로 통일돼 있고, **갈리는 축은 호출 주체다.** 자동 발동 스킬은 `description` + `when_to_use` 로 리스팅에 상주하고, 사용자 호출 전용은 `disable-model-invocation: true` 로 리스팅에서 **아예 빠진다**(비용 0, `/paul:이름` 으로만 열림).
+
+부수효과가 있거나(파일을 쓴다) 정해진 지점에서 멈추는 게 요점인 절차는 사용자 호출 전용으로 둔다 — 발동 시점을 사람이 쥐어야 브레이크 구실을 한다.
+
+**자동 발동 스킬은 축 하나에 하나다.** 현재 축 — `paul-rockstar`(어떻게 생각하는가) · `code-to-product`(어떻게 모델링하는가) · `agentic-workflow`(어떤 순서로) · `paul-stack`(무엇으로) · `coldsurf-domain`(무엇을) · `paul-taste`(어떤 결로). 새 스킬을 만들기 전에 **기존 축에 안 들어가는지 먼저 따진다.** 축이 겹치는 자동 발동 스킬이 둘이면 라우팅이 갈린다.
 
 ## 단일 정본
 
@@ -72,13 +77,21 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 
 ## 스킬 frontmatter
 
-`description` 은 **요약이 아니라 라우팅 신호**다. 무엇을 담았는지가 아니라 **언제 읽어야 하는지**를 쓴다. 사용자가 실제로 칠 법한 문구를 포함한다.
+스킬은 **자동 발동이 목적**이다. 리스팅에 상주하는 건 `description` + `when_to_use` 둘뿐이고, 그게 라우팅의 전부다. **역할을 나눈다.**
+
+| 필드 | 쓰는 것 |
+|---|---|
+| `description` | **무엇인가** — 스킬이 담은 축을 한 문장으로 |
+| `when_to_use` | **언제 읽는가** — 사용자가 실제로 칠 법한 발화 · 파일/레포 조건 · 하면 안 되는 것을 하려는 순간 |
 
 ```
 ❌ description: 스택 규약 모음
-✅ description: pnpm · Biome · TS strict · 서버별 규칙. 패키지 설치, 라우트 추가,
-   DTO 추가 시 참조할 것. npm/yarn 이나 ESLint/Prettier 를 제안하기 전에 먼저 읽는다.
+✅ description: pnpm · Biome · TS strict · 서버별 규칙.
+   when_to_use: 패키지 설치 · 라우트 추가 · DTO 추가 · 타입 체크.
+   "설치해줘" · "타입 에러 나" 요청. npm/yarn · ESLint/Prettier 를 제안하기 전에 반드시.
 ```
+
+`when_to_use` 는 `description` 뒤에 이어붙어 리스팅에 들어간다 — 즉 **공짜가 아니다.** 둘 합쳐 항목당 1,536자에서 잘리고, 전체 리스팅은 컨텍스트의 1% 예산을 나눠 쓴다. 트리거 문구는 넉넉히, 설명은 짧게.
 
 본문 500줄 이내. 넘치면 `references/` 로 내리고 본문엔 포인터만 남긴다.
 
