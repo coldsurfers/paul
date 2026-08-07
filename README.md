@@ -35,11 +35,12 @@ paul/
     ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
     ├── coldsurf-domain/     # COLDSURF 도메인 · 로드맵 · 편집 페르소나
     ├── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
+    ├── paul-music/          # 음악 취향 — 무엇을 듣고 어떻게 고르는가
     ├── spec/                # /paul:spec — 스펙 파일 생성 (사용자 호출 전용)
     └── step/                # /paul:step — 다음 스텝 실행 + 검증 (사용자 호출 전용)
 ```
 
-스킬은 두 종류다. 위 여덟은 **모델이 상황을 보고 자동으로 부른다.** `spec` · `step` 은 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰고, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
+스킬은 두 종류다. 위 아홉은 **모델이 상황을 보고 자동으로 부른다.** `spec` · `step` 은 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰고, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
 
 ## 설치
 
