@@ -24,7 +24,11 @@ when_to_use: '"커밋해줘" · "PR 올려줘" · "이름 뭐로 하지" · "스
 - 컴포넌트 심볼: `PascalCase`, 훅: `use*`
 - 역할 기반 접미사: `*-page` · `*-content` · `*-screen` · `*-shell` · `*-view` · `*-form`
 - **`*-client` 접미사를 쓰지 않는다** — 무엇을 하는지가 아니라 어디서 도는지를 말하는 이름이라 정보가 없다
-- Prisma 모델: `PascalCase` 단수형 + `camelCase` 필드. `snake_case` 로 바꾸자는 제안은 하지 않는다
+- Prisma 모델: `PascalCase` 단수형 + `camelCase` 필드. `snake_case` 로 바꾸자는 제안은 하지 않는다 (`@@map` 안 쓴다)
+- Prisma M:N 조인 테이블: `<A>sOn<B>s` — `ConcertsOnArtists` · `UsersOnSubscribedVenues`
+- DB 하나를 여러 프로덕트가 쓰면 **모델명 prefix 로 네임스페이스** — `PaulRockstarWork` · `NewsLetterUser`
+
+파일 배치와 접미사 규약(`.types.ts` · `.styled.ts` · 배럴)은 `paul-layout` 에 있다.
 
 ## 커밋
 
@@ -54,9 +58,29 @@ when_to_use: '"커밋해줘" · "PR 올려줘" · "이름 뭐로 하지" · "스
 
 ## 문서화
 
-- 큰 작업은 `specs/{앱또는패키지}/{기능}.md` 에 축적한다 — 다음 세션의 나를 위해서
+**`specs/` 와 `docs/` 는 다른 축이다.** 섞으면 둘 다 죽는다.
+
+| | `specs/{앱또는패키지}/{기능}.md` | `docs/{주제}.md` (평면) |
+|---|---|---|
+| 담는 것 | 기능 하나의 실행 계획 | 시스템 설명 · 로드맵 · 워크플로 |
+| 앱 종속 | 있다 | 없다 (`deploy-strategy` · `changeset-workflow`) |
+| 수명 | 끝나면 죽는다 | 오래 산다 |
+
+Spec 문서의 구조는 `agentic-workflow` 에 있다.
+
 - 인덱스 문서는 *어디에 무엇이 있는가*만 가리키고, 본문은 링크된 문서에서만 관리한다
 - 체크리스트는 작업하면서 갱신한다. 몰아서 쓰지 않는다
+
+## 주석
+
+주석은 **무엇을 하는지가 아니라 왜 이렇게 됐는지**를 쓴다. 우회 · 예외 · 남의 코드 사정은 **이유와 범위를 함께** 남긴다 — 다음 사람이 "이거 왜 이래" 로 시간을 쓰지 않게.
+
+```ts
+// `_setUserInput` 은 `@clack/core` 에서 protected 라 외부에서 직접 못 부른다.
+// Tab 으로 placeholder 를 채울 때만 쓰는 좁은 표면이라 최소 형태로만 노출한다.
+```
+
+한국어로 쓴다. 코드를 읽으면 알 수 있는 것은 쓰지 않는다.
 
 ## 리뷰
 
