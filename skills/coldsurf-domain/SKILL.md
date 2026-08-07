@@ -1,6 +1,7 @@
 ---
 name: coldsurf-domain
-description: COLDSURF 도메인 정본 — 공연/티켓 데이터 모델, SaaS→파트너십→마켓플레이스 로드맵, Fan Platform(공연 기록·취향 그래프) 비전, 파트너 benefit·fee 구조, 편집 페르소나. COLDSURF · billets · 공연 · 티켓 · 공연장 · 아티스트 · 라인업 관련 기능을 설계하거나 구현할 때 반드시 참조할 것.
+description: COLDSURF 도메인 정본 — 공연/티켓 데이터 모델, SaaS→파트너십→마켓플레이스 로드맵, Fan Platform(공연 기록·취향 그래프) 비전, 파트너 benefit·fee 구조, 편집 페르소나.
+when_to_use: billets · billets-app · billets-server · billets-admin · coldsurf 레포에서 작업할 때. 공연 · 티켓 · 공연장(venue) · 아티스트 · 라인업 · 포스터 · 예매 · 파트너가 등장하는 기능을 설계하거나 구현할 때. "이걸 뭐라고 부르지" · "이 기능이 로드맵 어디쯤이지" · "파트너한테 뭘 주지" 판단이 필요할 때.
 ---
 
 # COLDSURF 도메인
