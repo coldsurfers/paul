@@ -47,10 +47,16 @@ node hooks/inject-norms.js | python3 -m json.tool > /dev/null   # 훅 단독 실
 
 ```bash
 claude plugin marketplace update paul
-claude plugin uninstall paul@paul && claude plugin install paul@paul
+claude plugin update paul@paul
 ```
 
-`claude plugin update` 는 버전 비교라 `plugin.json` 의 `version` 을 안 올리면 no-op 이다. 그래서 재설치가 맞다.
+**`version` 을 올렸으면 이게 정상 경로다** — `plugin.json` 의 `version` 을 올려 main 에 머지하면 릴리스가 나가고, `update` 가 버전 차이를 보고 새 스냅샷을 받는다.
+
+`version` 을 그대로 둔 채 내용만 고쳐 돌려볼 때만 재설치한다 — `update` 는 버전 비교라 그 경우 no-op 이다.
+
+```bash
+claude plugin uninstall paul@paul && claude plugin install paul@paul
+```
 
 편집마다 돌릴 필요는 없다 — 여러 개 고친 뒤 마지막에 한 번. 다만 **하네스가 이상하면 문구를 다시 고치기 전에 캐시부터 의심한다.** 고쳤다고 믿는데 안 고쳐진 상태가 이 방식의 유일한 함정이다.
 
