@@ -1,0 +1,88 @@
+name: validate
+
+on:
+  pull_request:
+  push:
+    branches: [main]
+
+jobs:
+  assets:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - run: pip install pyyaml
+
+      # frontmatter YAML 파싱 · name 일치 · description 캡 · 매니페스트 · README 정합.
+      # `claude plugin validate` 가 놓치는 것들이다 — 특히 YAML 파싱 오류.
+      - name: 자산 형식 검사
+        run: python3 scripts/validate-assets.py
+
+  hooks:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      # 훅은 조용히 고장난다 — NORMS 가 안 붙어도 세션은 멀쩡해 보인다.
+      # 형식 검사로는 안 잡히므로 실제로 돌려서 출력을 본다.
+      # cwd 를 레포 밖으로 옮겨 실행한다 — 설치본은 캐시 경로에서 도니까.
+      - name: SessionStart 훅 동작 검사
+        working-directory: /tmp
+        run: |
+          node "$GITHUB_WORKSPACE/hooks/inject-norms.js" | python3 -c '
+          import json, sys
+          out = json.load(sys.stdin)["hookSpecificOutput"]
+          assert out["hookEventName"] == "SessionStart", out["hookEventName"]
+          ctx = out["additionalContext"]
+          assert ctx.startswith("<paul-norms>"), "여는 태그가 없다"
+          assert ctx.rstrip().endswith("</paul-norms>"), "닫는 태그가 없다"
+          assert "# NORMS.md" in ctx, "NORMS.md 본문이 안 실렸다"
+          print(f"✔ SessionStart 훅 정상 — {len(ctx)}자 주입")
+          '
+
+  plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - run: npm install -g @anthropic-ai/claude-code
+
+      # 공식 검사. 위 스크립트와 겹치지 않는 영역(플러그인 구조 규약)을 본다.
+      - name: claude plugin validate
+        run: claude plugin validate ./
+
+  version:
+    # 자산이 바뀌었는데 version 을 안 올리면 설치자에게 안 간다.
+    # main 머지 시 release.yml 이 그 버전으로 태그를 다는데, 같은 버전이면 no-op 이다.
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: 자산 변경 시 version bump 확인
+        run: |
+          BASE="origin/${{ github.base_ref }}"
+          CHANGED=$(git diff --name-only "$BASE"...HEAD)
+          ASSETS='^(skills|agents|hooks)/|^NORMS\.md$'
+
+          if ! echo "$CHANGED" | grep -qE "$ASSETS"; then
+            echo "자산 변경 없음 — 확인 생략"; exit 0
+          fi
+
+          OLD=$(git show "$BASE:.claude-plugin/plugin.json" | python3 -c 'import json,sys; print(json.load(sys.stdin)["version"])')
+          NEW=$(python3 -c 'import json; print(json.load(open(".claude-plugin/plugin.json"))["version"])')
+
+          if [ "$OLD" = "$NEW" ]; then
+            echo "✘ 자산이 바뀌었는데 version 이 $OLD 그대로다."
+            echo "  올리지 않으면 릴리스가 no-op 이라 아무도 이 변경을 받지 못한다."
+            echo "$CHANGED" | grep -E "$ASSETS" | sed 's/^/    /'
+            exit 1
+          fi
+
+          echo "✔ version $OLD → $NEW"

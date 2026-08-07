@@ -24,14 +24,21 @@
 | 자산을 고쳐 PR 을 낼 때 | `plugin.json` 의 `version` 을 올렸는가 — **main 머지 시 그 버전으로 릴리스가 나가고, 안 올리면 릴리스는 no-op 이다** |
 | `NORMS.md` · `hooks/*` | 훅이 단독 실행되는가 · 레포 전용 내용이 `NORMS.md` 에 새지 않았는가 |
 
-기계적으로 볼 수 있는 것:
+기계적으로 볼 수 있는 것은 스크립트가 본다 — 위 표에서 판단이 필요한 항목(축이 겹치는가 · 트리거가 실제 발화인가 · `tools` 가 최소인가)만 사람이 본다.
 
 ```bash
-head -5 skills/*/SKILL.md agents/*.md                 # frontmatter 훑기
-wc -l skills/*/SKILL.md                               # 500줄 제한
-python3 -m json.tool .claude-plugin/plugin.json > /dev/null
-python3 -m json.tool hooks/hooks.json > /dev/null
-node hooks/inject-norms.js | python3 -m json.tool > /dev/null
+pip install pyyaml                    # 최초 1회
+python3 scripts/validate-assets.py    # frontmatter · 매니페스트 · README 정합
+node hooks/inject-norms.js | python3 -m json.tool > /dev/null   # 훅 단독 실행
+```
+
+같은 검사가 `.github/workflows/validate.yml` 로 PR 마다 돈다 — `claude plugin validate` 와 version bump 확인까지 함께.
+
+**frontmatter 값이 `"` 로 시작하면 반드시 작은따옴표로 감싼다.** YAML 이 그걸 닫힌 스칼라로 읽고 뒤를 잉여 토큰으로 보기 때문에 파싱이 깨진다. 깨져도 `claude plugin validate` 는 통과하고, 스킬만 조용히 목록에서 빠져 자동 발동이 죽는다.
+
+```yaml
+❌ when_to_use: "이거 만들어줘" · "리팩토링해줘" 요청.
+✅ when_to_use: '"이거 만들어줘" · "리팩토링해줘" 요청.'
 ```
 
 ### 고친 자산을 세션에 반영하기

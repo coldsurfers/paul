@@ -15,7 +15,10 @@ paul/
 │   ├── plugin.json          # 플러그인 매니페스트 — version 이 릴리스 태그가 된다
 │   └── marketplace.json     # 로컬 마켓플레이스 등록용
 ├── .github/workflows/
+│   ├── validate.yml         # PR·push → 자산 형식 · 훅 동작 · version bump 검사
 │   └── release.yml          # main 머지 → 해당 버전 태그로 릴리스 노트 발행
+├── scripts/
+│   └── validate-assets.py   # frontmatter · 매니페스트 · README 정합 검사
 ├── hooks/
 │   ├── hooks.json           # SessionStart 훅 등록
 │   └── inject-norms.js      # NORMS.md 를 컨텍스트로 주입
