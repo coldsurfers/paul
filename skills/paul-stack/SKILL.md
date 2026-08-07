@@ -1,7 +1,7 @@
 ---
 name: paul-stack
 description: Paul 의 스택 규약 — pnpm · Biome · TypeScript strict · Next App Router 레이어 패턴 · React Hook Form · 서버별(Hono/Cloudflare vs Fastify/Lambda) 규칙 · changeset.
-when_to_use: 패키지 설치 · 린트/포맷 · 타입 체크 · 라우트 추가 · DTO 추가 · prisma 스키마 변경 · api-sdk 재생성 · changeset · 배포 작업. "설치해줘" · "타입 에러 나" · "라우트 추가해줘" · "빌드가 깨진다" · "포맷 맞춰줘" 요청. **npm · yarn · ESLint · Prettier 를 제안하거나 실행하기 전에 반드시 먼저 읽는다.**
+when_to_use: 패키지 설치 · 린트/포맷 · 타입 체크 · 라우트 추가 · DTO 추가 · prisma 스키마 변경 · api-sdk 재생성 · changeset · 배포 작업. `package.json` · `biome.json` · `turbo.json` · `*.route.ts` · `*.dto.ts` · `schema.prisma` 를 열거나 고칠 때. "설치해줘" · "타입 에러 나" · "라우트 추가해줘" · "빌드가 깨진다" · "포맷 맞춰줘" · "이거 왜 안 돼" 요청. **npm · yarn · ESLint · Prettier 를 제안하거나 실행하기 전에 반드시 먼저 읽는다.**
 ---
 
 # Stack Rules
