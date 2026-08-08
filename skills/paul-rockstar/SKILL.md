@@ -91,5 +91,4 @@ const { showDeleteConfirm, ... } = useDeleteUI(eventId)
 | 무엇을 어떻게 모델링할지 | `code-to-product` |
 | 어떤 순서로 작업할지 | `agentic-workflow` |
 | pnpm · Biome · TS · 서버 스택 판단 | `paul-stack` |
-| COLDSURF 기능 · 로드맵 · 편집 방향 | `coldsurf-domain` |
 | 도구 · 네이밍 · 커밋 취향 | `paul-taste` |
