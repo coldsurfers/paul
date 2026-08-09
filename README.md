@@ -32,6 +32,7 @@ paul/
     ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
     ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
     ├── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
+    ├── writing-voice/       # 글의 문체 — KO 3종 voice · EN 평론 톤 · 금지 목록
     ├── paul-music/          # 음악 취향 — 무엇을 듣고 어떻게 고르는가
     ├── grill/               # /paul:grill — 결정을 라운드로 심문 (사용자 호출 전용)
     ├── spec/                # /paul:spec — 스펙 파일 생성 (사용자 호출 전용)
@@ -101,6 +102,7 @@ cd /tmp && claude -p "<paul-norms> 블록 있나?"
 | 어떤 순서로 일하는가 | `agentic-workflow` |
 | 무엇으로 만드는가 | `paul-stack` |
 | 어떤 결을 좋아하는가 | `paul-taste` |
+| 어떤 문장으로 쓰는가 | `writing-voice` |
 
 기존 모놀리식 스킬 제거는 「새 기기에서」에 있다.
 
