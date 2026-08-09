@@ -2,7 +2,7 @@
 
 Paul Choi 로서 생각하고, 설계하고, 코딩하기 위한 **Claude Code 하네스**.
 
-에이전트(누가)와 스킬(어떻게)을 분리해 어느 레포에서든 재사용한다. 코드는 없고 마크다운 자산만 있다.
+축 하나에 스킬 하나로 쪼개 어느 레포에서든 재사용한다. 코드는 없고 마크다운 자산만 있다.
 
 ## 구성
 
@@ -22,15 +22,12 @@ paul/
 ├── hooks/
 │   ├── hooks.json           # SessionStart 훅 등록
 │   └── inject-norms.js      # NORMS.md 를 컨텍스트로 주입
-├── agents/
-│   ├── paul.md              # 메인 — 실제로 만드는 사람
-│   ├── paul-planner.md      # Plan · Spec 작성 (읽기 전용)
-│   └── paul-reviewer.md     # 코드 리뷰 (읽기 전용)
 └── skills/
     ├── paul-rockstar/       # 페르소나 정본 — 어떻게 생각하는가
     ├── code-to-product/     # 설계 철학 — 실물의 관점으로 모델링
     ├── paul-layout/         # 코드 배치 — 디렉터리 · 배럴 · 슬라이스 · 경계
     ├── paul-react/          # 컴포넌트 작성 — 메모 · 슬롯 · 껍데기 · 스타일
+    ├── paul-review/         # 코드 리뷰 — 렌즈 · 필수/권고 · 출력 형식
     ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
     ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
     ├── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
@@ -39,7 +36,9 @@ paul/
     └── step/                # /paul:step — 다음 스텝 실행 + 검증 (사용자 호출 전용)
 ```
 
-스킬은 두 종류다. 위 여덟은 **모델이 상황을 보고 자동으로 부른다.** `spec` · `step` 은 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰고, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
+스킬은 두 종류다. 위 아홉은 **모델이 상황을 보고 자동으로 부른다.** `spec` · `step` 은 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰고, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
+
+**에이전트는 없다.** 있던 셋(`paul` · `paul-planner` · `paul-reviewer`)은 전부 스킬로 흡수됐다 — 본문이 스킬의 재기술이었고, 사용자가 지목해야만 열리는 게 손해였다. 판단 기준은 AGENTS.md 「에이전트를 다시 만들 때」에 있다.
 
 ## 설치
 
@@ -86,6 +85,7 @@ cd /tmp && claude -p "<paul-norms> 블록 있나?"
 | 무엇을 어떻게 모델링하는가 | `code-to-product` |
 | 코드를 어디에 두는가 | `paul-layout` |
 | 컴포넌트 안에 무엇을 쓰는가 | `paul-react` |
+| 남의 코드를 어떻게 보는가 | `paul-review` |
 | 어떤 순서로 일하는가 | `agentic-workflow` |
 | 무엇으로 만드는가 | `paul-stack` |
 | 어떤 결을 좋아하는가 | `paul-taste` |
