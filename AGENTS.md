@@ -2,7 +2,7 @@
 
 `paul` 하네스 레포에서 작업할 때의 규약.
 
-**이 레포엔 코드가 없다.** Claude Code 하네스 자산 — 에이전트(누가) · 스킬(어떻게) · 커맨드(무엇을) — 마크다운만 있다. 그래서 "돌아간다"는 검증이 없고, 대신 **다음 세션의 에이전트가 이 문서를 읽고 올바르게 행동하는가**가 검증이다.
+**이 레포엔 코드가 없다.** Claude Code 하네스 자산 — 지금은 스킬(어떻게)뿐이고, 에이전트(누가)는 전부 스킬로 흡수됐다 — 마크다운만 있다. 그래서 "돌아간다"는 검증이 없고, 대신 **다음 세션의 에이전트가 이 문서를 읽고 올바르게 행동하는가**가 검증이다.
 
 전역 행동 규범의 정본은 `NORMS.md` 다 — 이 레포가 소유하고, `hooks/` 가 매 세션 주입한다. 이 문서는 그것을 이 레포 맥락으로 좁힌 것이고, 충돌하면 이 문서가 이긴다.
 
@@ -18,7 +18,7 @@
 |---|---|
 | `skills/*/SKILL.md` | frontmatter `name` 이 디렉터리명과 같은가 · `description` 이 "무엇인지" · `when_to_use` 가 "언제 읽는지"를 말하는가 · 둘 합쳐 1,536자 이내인가 · 본문 500줄 이내인가 |
 | 사용자 호출 전용 스킬 (`spec` · `step`) | `disable-model-invocation: true` 가 있는가 · `$ARGUMENTS` 가 비어 있을 때의 동작이 정의됐는가 (`when_to_use` 는 불필요 — 리스팅에 안 들어간다) |
-| `agents/*.md` | frontmatter `name` 이 파일명과 같은가 · `tools` 가 그 역할에 필요한 최소인가 |
+| `agents/*.md` (새로 만든다면) | frontmatter `name` 이 파일명과 같은가 · `tools` 가 그 역할에 필요한 최소인가 · 「에이전트를 다시 만들 때」를 통과하는가 |
 | 자산 추가 · 삭제 · 이름 변경 | README 구조도와 실제 트리가 일치하는가 |
 | `.claude-plugin/*.json` | JSON 이 파싱되는가 · `plugin.json` 의 `name` 과 `marketplace.json` 의 `plugins[].name` 이 같은가 |
 | 자산을 고쳐 PR 을 낼 때 | `plugin.json` 의 `version` 을 올렸는가 — **main 머지 시 그 버전으로 릴리스가 나가고, 안 올리면 릴리스는 no-op 이다** |
@@ -69,9 +69,9 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 | 성격 | 위치 |
 |---|---|
 | 어디서든 무조건 지켜야 하는 규범 | `NORMS.md` (매 세션 주입) |
-| 누구로서 판단하는가 (페르소나 · 권한 · 위임) | `agents/` |
 | 특정 상황에서만 필요한 지식 | `skills/` — 모델 자동 발동 |
 | 사용자가 명시적으로 호출하는 절차 | `skills/` + `disable-model-invocation: true` |
+| 도구 권한으로 막아야 하는 역할 | `agents/` — 「에이전트를 다시 만들 때」 |
 | 이 레포를 편집하는 규약 | 이 문서 |
 
 `NORMS.md` 는 매 세션 값을 치르므로 **비싸다.** 상황을 가리는 지식은 스킬로 내린다.
@@ -108,11 +108,18 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 
 본문 500줄 이내. 넘치면 `references/` 로 내리고 본문엔 포인터만 남긴다.
 
-## 에이전트 frontmatter
+## 에이전트를 다시 만들 때
 
-`tools` 는 그 역할이 실제로 필요한 것만. 읽기 전용 에이전트(`paul-planner`)에 `Edit`/`Write` 를 주지 않는다 — 역할 경계를 지시문이 아니라 **권한으로** 강제한다.
+**지금 `agents/` 는 없다.** 있던 셋을 스킬로 흡수한 이유는 하나다 — 본문이 스킬의 재기술이었고, 재기술은 갈라졌다. `paul-planner` 의 Spec 구조가 `agentic-workflow` 와 이미 어긋나 있었던 게 그 증거다.
 
-**그래서 경계가 권한이어야 하는 역할만 에이전트로 남긴다.** 스킬은 `tools` 를 못 좁히므로 경계가 지시문으로 내려간다 — 대신 리스팅에 상주해 사용자가 부르지 않아도 발동한다. 그 교환이 남는 장사인지가 판단 기준이다.
+에이전트가 스킬보다 나은 건 딱 하나, **`tools` 로 경계를 권한으로 강제**한다는 것이다. 스킬은 못 좁히므로 경계가 지시문으로 내려간다. 대신 스킬은 리스팅에 상주해 사용자가 지목하지 않아도 발동한다.
+
+그래서 **둘 다 만족해야 에이전트로 만든다.**
+
+1. 지시문으로는 못 막고 **권한으로 막아야** 하는 경계가 있다 (읽기 전용 · 네트워크 차단)
+2. 본문이 기존 스킬의 재기술이 아니다 — 재기술이면 스킬에 흡수하고 포인터만 남긴다
+
+만든다면 `tools` 는 그 역할에 실제로 필요한 최소만. 읽기 전용 역할에 `Edit`/`Write` 를 주는 순간 1번이 무의미해진다.
 
 ## 커밋
 
@@ -120,5 +127,5 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 
 ```
 docs(paul): AGENTS.md 하네스 작업 규약 추가
-feat(paul): paul-planner 에이전트 추가
+feat(paul): paul-review 스킬 추가
 ```
