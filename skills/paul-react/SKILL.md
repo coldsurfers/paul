@@ -1,7 +1,7 @@
 ---
 name: paul-react
-description: Paul 의 React · React Native 컴포넌트 작성 규약 — 메모이제이션 기본값, ReactNode 슬롯 레이아웃, 껍데기/알맹이 분리, 타입 바인딩 훅, 플랫폼당 스타일 도구 하나, 디자인 토큰.
-when_to_use: 컴포넌트 · 화면 본문을 쓰거나 고칠 때. props 를 설계할 때. 상태 · 파생값 · 핸들러를 배치할 때. 로딩 · 에러 경계를 붙일 때. 스타일이나 색을 지정할 때. 리스트를 렌더할 때. "컴포넌트 만들어줘" · "이 화면 짜줘" · "props 어떻게 넘기지" · "리렌더가 많은데" · "로딩 처리" · "스타일 어떻게 줘" 요청. `useReducer` · `css` prop · 하드코딩 색상 · index key 를 쓰려는 순간. 파일을 어디에 둘지는 `paul-layout` 의 몫이다.
+description: Paul 의 React · React Native 컴포넌트 작성 규약 — 메모이제이션 기본값, ReactNode 슬롯 레이아웃, 껍데기/알맹이 분리, 타입 바인딩 훅, 표면당 스타일 도구 하나, 이름을 가진 wrapper, 디자인 토큰.
+when_to_use: 컴포넌트 · 화면 본문을 쓰거나 고칠 때. props 를 설계할 때. 상태 · 파생값 · 핸들러를 배치할 때. 로딩 · 에러 경계를 붙일 때. 스타일이나 색을 지정할 때. 리스트를 렌더할 때. "컴포넌트 만들어줘" · "이 화면 짜줘" · "props 어떻게 넘기지" · "리렌더가 많은데" · "로딩 처리" · "스타일 어떻게 줘" 요청. `useReducer` · `css` prop · 하드코딩 색상 · index key 를 쓰려는 순간. wrapper `div` 에 클래스 조합식(`cx(...)`)을 늘어놓으려는 순간. 파일을 어디에 둘지는 `paul-layout` 의 몫이다.
 ---
 
 # React 작성 규약
@@ -80,16 +80,31 @@ export const useHomeScreenRoute = () => useRoute<HomeScreenProps['route']>()
 
 소비처는 인자 없이 부른다. 타입이 바뀌면 고칠 곳이 한 군데다.
 
-## 5. 스타일 도구는 플랫폼당 하나
+## 5. 스타일 도구는 표면당 하나
 
 | | 쓰는 것 | 쓰지 않는 것 |
 |---|---|---|
 | React Native | `StyleSheet.create` — 파일 하단에 `styles` | `.styled` 파일 |
-| Web | emotion `styled` — `.styled.ts` 로 분리, `Styled*` prefix | **`css` prop** |
+| Web | **그 앱이 고른 도구 하나** — emotion `styled`(`.styled.ts` · `Styled*` prefix) 또는 vanilla-extract(`.css.ts`) | **`css` prop** · 한 표면에 두 도구 혼용 |
+
+무엇을 골랐는지는 레포가 정한다. 이 절은 **고른 하나로만 간다**는 것만 정한다.
 
 - 인라인 `style={{}}` 은 **동적 값만** — 테마 색, 계산된 크기. 정적 스타일을 인라인에 두지 않는다
 - 반응형은 브레이크포인트 헬퍼로 묶는다 — `${media.medium(css\`...\`)}`
-- 컴포넌트 파일에 스타일 정의가 쌓이면 `.styled.ts` 로 내린다 (`paul-layout` 1절)
+- 컴포넌트 파일에 스타일 정의가 쌓이면 스타일 파일로 내린다 (`paul-layout` 1절)
+
+### 구조를 가진 wrapper 는 이름을 가진 컴포넌트다
+
+```tsx
+<WarmPaperSurface>                                    // ✅ 이름이 의미다
+<div className={cx(sprinkles({ ... }), page)} style={SURFACE}>   // ❌
+```
+
+- **JSX 본문에 스타일 조합식을 노출하지 않는다.** `cx(...)` · `styled` 선언은 컴포넌트 안으로 들어가고, 화면은 이름만 읽는다
+- 이름은 **역할**이다 — `WarmPaperSurface` · `PageShell`. `Wrapper` · `Container1` 은 이름이 아니다
+- 같은 조합이 **두 번째 표면에 나타나면** 그때 뽑는다. 한 번 쓰는 `<div className={styles.row}>` 까지 컴포넌트로 만들지 않는다
+
+**판정: 이 div 에 이름을 붙일 수 있는가.** 붙일 수 있으면 컴포넌트다.
 
 ## 6. 색은 토큰으로만
 
@@ -123,7 +138,8 @@ color: '#1a1a1a'                                // ❌
 | 하지 않는 것 | 이유 |
 |---|---|
 | `useReducer` | 그만큼 복잡하면 store 로 나갈 때다 |
-| `css` prop | 웹은 styled 하나로 간다 |
+| `css` prop | 한 표면은 고른 도구 하나로 간다 |
+| JSX 에 노출된 스타일 조합식 | 이름을 붙일 수 있으면 컴포넌트다 |
 | 하드코딩 hex | 다크 모드에서 조용히 깨진다 |
 | index key | 리스트가 재정렬되면 상태가 엉킨다 |
 | 컴포넌트마다 `isLoading` 분기 | 껍데기가 한 번에 처리한다 |
