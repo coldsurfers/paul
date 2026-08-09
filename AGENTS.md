@@ -17,7 +17,7 @@
 | 바꾼 것 | 검증 |
 |---|---|
 | `skills/*/SKILL.md` | frontmatter `name` 이 디렉터리명과 같은가 · `description` 이 "무엇인지" · `when_to_use` 가 "언제 읽는지"를 말하는가 · 둘 합쳐 1,536자 이내인가 · 본문 500줄 이내인가 |
-| 사용자 호출 전용 스킬 (`grill` · `spec` · `step` · `reply-review`) | `disable-model-invocation: true` 가 있는가 · `$ARGUMENTS` 가 비어 있을 때의 동작이 정의됐는가 (`when_to_use` 는 불필요 — 리스팅에 안 들어간다) |
+| 사용자 호출 전용 스킬 (`grill` · `spec` · `step` · `reply-review` · `like-gpt`) | `disable-model-invocation: true` 가 있는가 · `$ARGUMENTS` 가 비어 있을 때의 동작이 정의됐는가 (`when_to_use` 는 불필요 — 리스팅에 안 들어간다) |
 | `agents/*.md` (새로 만든다면) | frontmatter `name` 이 파일명과 같은가 · `tools` 가 그 역할에 필요한 최소인가 · 「에이전트를 다시 만들 때」를 통과하는가 |
 | 자산 추가 · 삭제 · 이름 변경 | README 구조도와 실제 트리가 일치하는가 |
 | `.claude-plugin/*.json` | JSON 이 파싱되는가 · `plugin.json` 의 `name` 과 `marketplace.json` 의 `plugins[].name` 이 같은가 |
