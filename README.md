@@ -18,7 +18,8 @@ paul/
 │   ├── validate.yml         # PR·push → 자산 형식 · 훅 동작 · version bump 검사
 │   └── release.yml          # main 머지 → 해당 버전 태그로 릴리스 노트 발행
 ├── scripts/
-│   └── validate-assets.py   # frontmatter · 매니페스트 · README 정합 검사
+│   ├── validate-assets.py   # frontmatter · 매니페스트 · README 정합 검사
+│   └── setup-settings.js    # 기기별 ~/.claude/settings.json 을 규범이 요구하는 상태로
 ├── hooks/
 │   ├── hooks.json           # SessionStart 훅 등록
 │   └── inject-norms.js      # NORMS.md 를 컨텍스트로 주입
@@ -61,16 +62,30 @@ paul/
 claude plugin marketplace add coldsurfers/paul
 claude plugin install paul@paul
 
+node scripts/setup-settings.js   # 기기별 전역 설정 (아래)
+
 claude plugin update paul@paul   # 나중에 최신으로
 ```
 
 디바이스가 여러 대라 심볼릭 링크는 쓰지 않는다 — 절대경로가 디바이스마다 달라 깨진다.
 
-설치하면 `NORMS.md` 가 **모든 레포의 매 세션에** 자동 주입된다. 기기별 `settings.json` 설정은 필요 없다.
+설치하면 `NORMS.md` 가 **모든 레포의 매 세션에** 자동 주입된다.
+
+### 기기별 전역 설정 — 왜 한 줄이 더 필요한가
+
+플러그인이 실을 수 있는 건 스킬 · 훅 · 명령까지고, **`~/.claude/settings.json` 은 못 건드린다.** 그런데 NORMS §4.5 는 3스텝 이상 작업에 `TaskCreate` 체크리스트를 요구하고, 그 툴은 `env.CLAUDE_CODE_ENABLE_TODO_TOOLS` 가 있어야 세션에 올라온다. 규범만 주입되고 툴이 없으면 **조용히 안 지켜진다.**
+
+`scripts/setup-settings.js` 가 그 키만 병합한다. 몇 번을 돌려도 결과가 같고, 기존 키 · 파일 퍼미션은 건드리지 않는다. 설정 watcher 가 집어가므로 **실행 중인 세션에도 바로 붙는다.**
+
+레포를 클론하지 않은 기기라면 설치 캐시에서 그대로 돌린다.
+
+```bash
+node ~/.claude/plugins/cache/paul/paul/*/scripts/setup-settings.js
+```
 
 ### 새 기기에서
 
-위 두 줄이 전부다. 다만 이 레포 이전의 설정이 남아 있는 기기라면 **중복 로딩되므로 아래를 지운다.**
+위가 전부다. 다만 이 레포 이전의 설정이 남아 있는 기기라면 **중복 로딩되므로 아래를 지운다.**
 
 ```bash
 rm -rf ~/dotfiles/.agents/skills/paul-rockstar   # 축 분리 전 모놀리식 스킬
@@ -83,10 +98,10 @@ rm -f  ~/dotfiles/AGENTS.md                      # NORMS.md 로 이관됨
 확인:
 
 ```bash
-cd /tmp && claude -p "<paul-norms> 블록 있나?"
+cd /tmp && claude -p "<paul-norms> 블록 있나? TaskCreate 툴 쓸 수 있나?"
 ```
 
-레포 밖에서 물어야 의미가 있다. 이 레포 안에서는 `CLAUDE.md → AGENTS.md → @NORMS.md` 로도 들어오므로 훅이 죽어도 붙어 보인다.
+레포 밖에서 물어야 의미가 있다. 이 레포 안에서는 `CLAUDE.md → AGENTS.md → @NORMS.md` 로도 들어오므로 훅이 죽어도 붙어 보인다. 둘 다 있어야 §4.5 가 실제로 지켜진다 — 규범은 훅이, 툴은 설정이 대는 것이라 한쪽만 살아도 티가 안 난다.
 
 자산을 고칠 때의 반영 절차는 AGENTS.md 4장에 있다.
 
