@@ -56,6 +56,8 @@ page.tsx (RSC) → *-page.tsx (useRouter + Suspense) → *-content.tsx (useSuspe
 
 ## 서버 — 두 계열을 혼동하지 않는다
 
+여기 있는 건 **무엇으로 만드는가**(프레임워크 · 등록 절차 · 코드젠)다. **핸들러 안에 무엇을 두는가**(route · service · repository · module 레이어)는 `paul-nodejs` 에 있다.
+
 ### billets-server — Hono + Cloudflare Workers (Fastify 아님)
 
 - `@hono/zod-openapi`. DTO 는 `packages/data-models/*.dto.ts`(zod), 라우트는 `createRoute` + `app.openapi`(`*.route.ts`), `src/index.ts` 에 `register*Routes(app)` 등록

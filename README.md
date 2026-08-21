@@ -29,6 +29,7 @@ paul/
     ├── paul-layout/         # 코드 배치 — 디렉터리 · 배럴 · 슬라이스 · 경계
     ├── paul-react/          # 컴포넌트 작성 — 메모 · 슬롯 · 껍데기 · 스타일
     ├── paul-react-native/   # RN 고유 — 리스트 선택 · NativeWind 함정 · 픽셀 검증
+    ├── paul-nodejs/         # 서버 레이어 — route · service · repository · module
     ├── paul-review/         # 코드 리뷰 — 렌즈 · 필수/권고 · 출력 형식
     ├── paul-review-fix/     # 리뷰 반영 — 가르기 · 반영 단위 · 되짚기(커밋 링크)
     ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
@@ -116,6 +117,7 @@ cd /tmp && claude -p "<paul-norms> 블록 있나? TaskCreate 툴 쓸 수 있나?
 | 코드를 어디에 두는가 | `paul-layout` |
 | 컴포넌트 안에 무엇을 쓰는가 | `paul-react` |
 | 네이티브라서 무엇이 다른가 | `paul-react-native` |
+| 서버 안에 무엇을 쓰는가 | `paul-nodejs` |
 | 남의 코드를 어떻게 보는가 | `paul-review` |
 | 리뷰를 어떻게 반영하는가 | `paul-review-fix` |
 | 어떤 순서로 일하는가 | `agentic-workflow` |

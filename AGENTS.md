@@ -80,7 +80,7 @@ claude plugin uninstall paul@paul && claude plugin install paul@paul
 
 부수효과가 있거나(파일을 쓴다) 정해진 지점에서 멈추는 게 요점인 절차는 사용자 호출 전용으로 둔다 — 발동 시점을 사람이 쥐어야 브레이크 구실을 한다.
 
-**자동 발동 스킬은 축 하나에 하나다.** 현재 축 — `paul-rockstar`(어떻게 생각하는가) · `code-to-product`(어떻게 모델링하는가) · `paul-layout`(어디에 두는가) · `paul-react`(컴포넌트 안에 무엇을) · `paul-react-native`(네이티브라서 무엇이 다른가) · `paul-review`(어떻게 검토하는가) · `agentic-workflow`(어떤 순서로) · `paul-stack`(무엇으로) · `paul-taste`(어떤 결로) · `writing-voice`(어떤 문장으로). 새 스킬을 만들기 전에 **기존 축에 안 들어가는지 먼저 따진다.** 축이 겹치는 자동 발동 스킬이 둘이면 라우팅이 갈린다.
+**자동 발동 스킬은 축 하나에 하나다.** 현재 축 — `paul-rockstar`(어떻게 생각하는가) · `code-to-product`(어떻게 모델링하는가) · `paul-layout`(어디에 두는가) · `paul-react`(컴포넌트 안에 무엇을) · `paul-react-native`(네이티브라서 무엇이 다른가) · `paul-nodejs`(서버 안에 무엇을) · `paul-review`(어떻게 검토하는가) · `agentic-workflow`(어떤 순서로) · `paul-stack`(무엇으로) · `paul-taste`(어떤 결로) · `writing-voice`(어떤 문장으로). 새 스킬을 만들기 전에 **기존 축에 안 들어가는지 먼저 따진다.** 축이 겹치는 자동 발동 스킬이 둘이면 라우팅이 갈린다.
 
 ## 단일 정본
 
