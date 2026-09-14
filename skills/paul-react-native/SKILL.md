@@ -1,7 +1,7 @@
 ---
 name: paul-react-native
 description: Paul 의 React Native 규약 — 목록을 ScrollView 로 둘지 FlatList 로 갈지, FlatList 로 옮길 때 딸려오는 셋, NativeWind 가 컴포넌트마다 다르게 붙는 함정, 레이아웃 회귀를 픽셀로 잡기, 네이티브가 소유하는 것.
-when_to_use: React Native · Expo 레포에서 화면이나 목록을 쓰거나 고칠 때. `ScrollView` 에 `map` 으로 도메인 아이템을 뿌리려는 순간. `FlatList` 로 바꾸려는 순간. NativeWind 로 `className` · `contentContainerClassName` 을 줄 때. safe-area inset 을 어디서 먹일지 정할 때. 그라디언트 · 이미지에 radius 를 줄 때. "간격이 사라졌다" · "시안이랑 다른데" · "스크롤이 이상하다" · "리스트 성능" · "ScrollView 가 최선인가" · "memo 걸어야 하나" 요청. 시뮬레이터 스크린샷을 시안과 대조할 때. 컴포넌트 일반론(메모이제이션 · 슬롯 · 토큰)은 `paul-react` 의 몫이다.
+when_to_use: React Native · Expo 레포에서 화면이나 목록을 쓰거나 고칠 때. `ScrollView` 에 `map` 으로 도메인 아이템을 뿌리려는 순간. `FlatList` 로 바꾸려는 순간. NativeWind 로 `className` · `contentContainerClassName` 을 줄 때. safe-area inset 을 어디서 먹일지 정할 때. 그라디언트 · 이미지에 radius 를 줄 때. "간격이 사라졌다" · "시안이랑 다른데" · "스크롤이 이상하다" · "리스트 성능" · "ScrollView 가 최선인가" 요청. 시뮬레이터 스크린샷을 시안과 대조할 때. 컴포넌트 일반론(메모이제이션 · 슬롯 · 토큰)은 `paul-react` 의 몫이다.
 ---
 
 # React Native 규약
@@ -36,11 +36,11 @@ const renderItem: ListRenderItem<GalleryItem> = useCallback(
 
 - `renderItem` 은 `useCallback` — 매 렌더 새 함수면 셀이 통째로 다시 그려진다
 - `keyExtractor` 는 **도메인 id.** index 는 재정렬에서 상태를 엉킨다
-- 아이템 컴포넌트는 `memo` — 리스트 아이템이 `memo` 의 대표 사례다 (`paul-react` 1절)
+- 아이템 컴포넌트는 `memo` — 셀은 항상 마운트돼 있고 트리가 무겁다. `paul-react` 1절의 판정을 이미 통과한 자리다
 
 **로딩 자리표까지 태우지 않는다.** 스켈레톤은 개수가 고정이라 평범한 `flex-row` View 다 — 가상화할 게 없다.
 
-`memo` 를 어디에 거는지 헷갈리면 셋을 본다 — **항상 마운트돼 있는가 · prop 이 원시값 몇 개인가 · 트리가 무거운가**(SVG 아이콘 여러 개). 셋이 맞으면 부모가 다시 그려질 때 딸려 그릴 이유가 없다. 탭바가 그 자리다.
+**리스트 밖에서 `memo` 를 어디에 걸지는 `paul-react` 1절이 정본이다.** 이 절이 다루는 건 리스트가 이미 그 판정을 통과했다는 것뿐이다.
 
 ## 3. NativeWind 는 컴포넌트마다 다르게 붙는다
 
