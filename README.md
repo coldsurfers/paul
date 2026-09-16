@@ -44,10 +44,11 @@ paul/
     ├── step/                # /paul:step — 다음 스텝 실행 + 검증 (사용자 호출 전용)
     ├── reply-review/        # /paul:reply-review — PR 코멘트 답글 (사용자 호출 전용)
     ├── like-gpt/            # /paul:like-gpt — 압축된 문장을 풀어 다듬기 (사용자 호출 전용)
-    └── autoprompt/          # /paul:autoprompt — 대충 던진 한 줄을 프롬프트로 재해석 (사용자 호출 전용)
+    ├── autoprompt/          # /paul:autoprompt — 대충 던진 한 줄을 프롬프트로 재해석 (사용자 호출 전용)
+    └── match-ref/           # /paul:match-ref — 마스터를 레퍼런스에 맞춰 후보를 굽는다 (사용자 호출 전용)
 ```
 
-스킬은 두 종류다. 위 열은 **모델이 상황을 보고 자동으로 부른다.** `grill` · `spec` · `step` · `reply-review` · `like-gpt` · `autoprompt` 는 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰거나 남의 PR 에 글을 남기거나, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
+스킬은 두 종류다. 위 열은 **모델이 상황을 보고 자동으로 부른다.** `grill` · `spec` · `step` · `reply-review` · `like-gpt` · `autoprompt` · `match-ref` 는 `disable-model-invocation: true` 를 달아 **사용자가 `/` 로 칠 때만** 열린다 — 파일을 쓰거나 남의 PR 에 글을 남기거나, 정해진 지점에서 멈추는 절차라 발동 시점을 사람이 쥐어야 한다.
 
 셋은 이어진다.
 
