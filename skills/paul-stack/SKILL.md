@@ -35,7 +35,7 @@ pnpm biome check --write <file>   # 편집 후 실행, 커밋에 포함
 - 작고 직관적인 컴포넌트, compact 한 props
 - RN 은 NewArch(0.73+) 타깃, 불필요한 전역 상태 회피
 
-**컴포넌트 작성 규약(메모이제이션 · 슬롯 · 껍데기/알맹이 · 스타일 · 토큰)은 `paul-react` 에 있다.**
+**작성 규약(세우는 순서 · 배치 · 메모이제이션 · 슬롯 · 프리미티브 · 껍데기/알맹이 · 스타일 · 토큰)은 `paul-frontend` 에 있다.**
 
 ### Next.js App Router 레이어 패턴
 
