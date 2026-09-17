@@ -6,9 +6,9 @@ when_to_use: 서버 라우트/핸들러를 새로 쓰거나 고칠 때. 핸들�
 
 # Node 서버 레이어
 
-컴포넌트 안에 무엇을 쓰는가는 `paul-react`. **이건 서버 핸들러 안에 무엇을 쓰는가다.**
+프론트엔드 코드를 어떻게 쓰는가는 `paul-frontend`. **이건 서버 핸들러 안에 무엇을 쓰는가다.**
 
-도구·설치·라우트 등록 절차(pnpm · Biome · `createRoute` · api-sdk · prisma 3단 sync)는 `paul-stack`. 디렉터리 일반론은 `paul-layout`. 여기는 **레이어와 그 사이 계약**만 다룬다.
+도구·설치·라우트 등록 절차(pnpm · Biome · `createRoute` · api-sdk · prisma 3단 sync)는 `paul-stack`. 배치 일반론(유닛 하나 = 디렉터리 하나 · 배럴 · 도메인 슬라이스 · 타입 정본)은 플랫폼 중립이라 `paul-frontend` Ⅱ부가 정본이다. 여기는 **레이어와 그 사이 계약**만 다룬다.
 
 ## 네 자리
 
@@ -46,6 +46,17 @@ export class DataCorrectionRepository {
 **라우트가 라우트를 import 하지 않는다.** 의존은 `route → domain → lib` 한 방향. 공유가 필요하면 아래로 내린다 — "그 매핑 어디 있냐"의 답이 "다른 **라우트** 파일"이 되는 순간 진 것이다.
 
 **500 계약은 손으로 지키지 않는다.** 핸들러마다 `try/catch` 를 쓰면 반드시 빠뜨린다(실측: 134개 중 64개가 빠져 OpenAPI 에 선언한 `{ code, message }` 대신 프레임워크 기본 plain text 가 나갔다). 전역 에러 핸들러 하나로 잡는다.
+
+## 에러는 `code` + `message`
+
+```ts
+{ code: 'ARTIST_NOT_FOUND', message: 'artist not found' }
+```
+
+- **`code`** — SCREAMING_SNAKE. 분기의 대상이고 계약이다
+- **`message`** — 사람이 읽는 것. 분기하지 않고, 바뀌어도 깨지지 않는다
+- 미리 만들지 않는다. 실제로 발생하는 것만 정의한다
+- 마지막 갈래는 `UNKNOWN` + 원본 로그
 
 ## module — 조립은 함수 한 개
 

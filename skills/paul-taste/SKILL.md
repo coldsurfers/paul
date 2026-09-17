@@ -28,7 +28,7 @@ when_to_use: '"커밋해줘" · "PR 올려줘" · "이름 뭐로 하지" · "스
 - Prisma M:N 조인 테이블: `<A>sOn<B>s` — `ConcertsOnArtists` · `UsersOnSubscribedVenues`
 - DB 하나를 여러 프로덕트가 쓰면 **모델명 prefix 로 네임스페이스** — `PaulRockstarWork` · `NewsLetterUser`
 
-파일 배치와 접미사 규약(`.types.ts` · `.styled.ts` · 배럴)은 `paul-layout` 에 있다.
+파일 배치와 접미사 규약(`.types.ts` · `.styled.ts` · 배럴)은 `paul-frontend` 에 있다.
 
 ## 커밋
 

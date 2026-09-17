@@ -1,12 +1,8 @@
----
-name: paul-react-native
-description: Paul 의 React Native 규약 — 목록을 ScrollView 로 둘지 FlatList 로 갈지, FlatList 로 옮길 때 딸려오는 셋, NativeWind 가 컴포넌트마다 다르게 붙는 함정, 레이아웃 회귀를 픽셀로 잡기, 네이티브가 소유하는 것.
-when_to_use: React Native · Expo 레포에서 화면이나 목록을 쓰거나 고칠 때. `ScrollView` 에 `map` 으로 도메인 아이템을 뿌리려는 순간. `FlatList` 로 바꾸려는 순간. NativeWind 로 `className` · `contentContainerClassName` 을 줄 때. safe-area inset 을 어디서 먹일지 정할 때. 그라디언트 · 이미지에 radius 를 줄 때. "간격이 사라졌다" · "시안이랑 다른데" · "스크롤이 이상하다" · "리스트 성능" · "ScrollView 가 최선인가" 요청. 시뮬레이터 스크린샷을 시안과 대조할 때. 컴포넌트 일반론(메모이제이션 · 슬롯 · 토큰)은 `paul-react` 의 몫이다.
----
+# 네이티브라서 다른 것
 
-# React Native 규약
+`paul-frontend` 의 확장. **React Native · Expo 레포에서만 연다.**
 
-`paul-react` 가 **컴포넌트 안에 무엇을 쓰는가**라면 이건 **네이티브라서 다른 것**만 담는다. 메모이제이션 기본값 · `ReactNode` 슬롯 · 껍데기/알맹이 · 색 토큰은 거기 있다. 함께 읽는다.
+메모이제이션 판정 · `ReactNode` 슬롯 · 프리미티브 폭 · 껍데기/알맹이 · 색 토큰은 본문에 있다. 여기는 **네이티브라서 달라지는 것**만 담는다.
 
 ## 1. 목록인가 화면인가
 
@@ -17,7 +13,7 @@ when_to_use: React Native · Expo 레포에서 화면이나 목록을 쓰거나 
 | 개수가 고정된 이종 슬롯 — 화면 본문 | `ScrollView` |
 | 서버가 개수를 정하는 동종 아이템 | `FlatList` |
 
-- 화면 본문을 `FlatList` 로 바꾸려면 **슬롯 순서를 `data` 배열로** 만들어야 한다. 그 순간 레이아웃이 섹션을 알게 되고(`paul-react` 2절), 개수가 고정이라 가상화 이득도 없다
+- 화면 본문을 `FlatList` 로 바꾸려면 **슬롯 순서를 `data` 배열로** 만들어야 한다. 그 순간 레이아웃이 섹션을 알게 되고(본문 7절), 개수가 고정이라 가상화 이득도 없다
 - 반대로 가로 셸프를 `ScrollView` 로 두면 **화면 밖 카드까지 전부 그린다.** 카드가 이미지를 물면 그만큼 디코딩한다
 - 세로 `ScrollView` 안의 가로 `FlatList` 는 괜찮다 — 축이 달라 nested VirtualizedList 경고가 안 난다. 같은 축으로 겹치는 게 문제다
 
@@ -36,11 +32,11 @@ const renderItem: ListRenderItem<GalleryItem> = useCallback(
 
 - `renderItem` 은 `useCallback` — 매 렌더 새 함수면 셀이 통째로 다시 그려진다
 - `keyExtractor` 는 **도메인 id.** index 는 재정렬에서 상태를 엉킨다
-- 아이템 컴포넌트는 `memo` — 셀은 항상 마운트돼 있고 트리가 무겁다. `paul-react` 1절의 판정을 이미 통과한 자리다
+- 아이템 컴포넌트는 `memo` — 셀은 항상 마운트돼 있고 트리가 무겁다. 본문 6절의 판정을 이미 통과한 자리다
 
 **로딩 자리표까지 태우지 않는다.** 스켈레톤은 개수가 고정이라 평범한 `flex-row` View 다 — 가상화할 게 없다.
 
-**리스트 밖에서 `memo` 를 어디에 걸지는 `paul-react` 1절이 정본이다.** 이 절이 다루는 건 리스트가 이미 그 판정을 통과했다는 것뿐이다.
+**리스트 밖에서 `memo` 를 어디에 걸지는 본문 6절이 정본이다.** 이 절이 다루는 건 리스트가 이미 그 판정을 통과했다는 것뿐이다.
 
 ## 3. NativeWind 는 컴포넌트마다 다르게 붙는다
 
