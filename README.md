@@ -26,6 +26,7 @@ paul/
 └── skills/
     ├── paul-rockstar/       # 페르소나 정본 — 어떻게 생각하는가
     ├── code-to-product/     # 설계 철학 — 실물의 관점으로 모델링
+    ├── model-before-render/ # 상태 설계 — 기획을 자료구조로 · 스토어 경계로 React 에
     ├── paul-frontend/       # 프론트 작성 정본 — 세우는 순서 · 배치 · 컴포넌트 (+RN 참고문서)
     ├── paul-nodejs/         # 서버 레이어 — route · service · repository · module
     ├── paul-review/         # 코드 리뷰 — 정본 찾기 · 렌즈 · 필수/권고 · 개수 상한 · 톤
@@ -115,6 +116,7 @@ cd /tmp && claude -p "<paul-norms> 블록 있나? TaskCreate 툴 쓸 수 있나?
 |---|---|
 | 어떻게 생각하는가 | `paul-rockstar` |
 | 무엇을 어떻게 모델링하는가 | `code-to-product` |
+| 상태의 모양을 어떻게 잡는가 | `model-before-render` |
 | 프론트엔드 코드를 어떻게 쓰는가 | `paul-frontend` |
 | 서버 안에 무엇을 쓰는가 | `paul-nodejs` |
 | 남의 코드를 어떻게 보는가 | `paul-review` |
