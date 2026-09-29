@@ -31,6 +31,7 @@ paul/
     ├── paul-nodejs/         # 서버 레이어 — route · service · repository · module
     ├── paul-review/         # 코드 리뷰 — 정본 찾기 · 렌즈 · 필수/권고 · 개수 상한 · 톤
     ├── paul-review-fix/     # 리뷰 반영 — 가르기 · 반영 단위 · 되짚기(커밋 링크)
+    ├── legal-guard/         # 법적 가드 — 개인정보 · 광고 · 발송 신호를 합법 설계로 바꿔 구현
     ├── agentic-workflow/    # 요구사항 → Plan → Spec → step → 검증 → 커밋
     ├── paul-stack/          # 스택 규약 — pnpm · Biome · TS · 앱별 서버 구분
     ├── paul-taste/          # 취향 — 도구 · 코드 · 커뮤니케이션
