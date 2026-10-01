@@ -55,7 +55,7 @@ const renderItem: ListRenderItem<GalleryItem> = useCallback(
 <FlatList   contentContainerStyle={SHELF_CONTENT} horizontal>        // ✅ style 로
 ```
 
-- `contentContainer*` 계열은 **style 객체로** 준다. 정적 값이니 상수 파일에 두고 왜 className 이 아닌지 주석으로 남긴다
+- `contentContainer*` 계열은 **style 객체로** 준다. 정적 값이니 상수 파일에 두고 왜 className 이 아닌지 상수의 JSDoc 한 줄로 남긴다
 - **`ScrollView` → `FlatList` 로 바꿀 때 className 을 그대로 옮기지 않는다.** 조용한 회귀의 단골 경로다
 
 ## 4. 회귀는 눈이 아니라 픽셀로 잡는다
