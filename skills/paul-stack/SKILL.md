@@ -26,7 +26,7 @@ pnpm biome check --write <file>   # 편집 후 실행, 커밋에 포함
 
 ## TypeScript
 
-- `any` 금지 — 불가피하면 왜 불가피한지 주석을 단다
+- `any` 금지 — 불가피하면 왜 불가피한지 선언의 JSDoc 한 줄로 단다
 - strict 모드, 타입 단언(`as`) 최소화
 - 타입 체크: `pnpm turbo check:type`
 
