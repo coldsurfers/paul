@@ -159,9 +159,41 @@ gh api repos/<owner>/<repo>/pulls/<N>/reviews --method POST --input review.json
 ```
 
 - `event` 는 **`COMMENT`** — `APPROVE` · `REQUEST_CHANGES` 는 사람이 누른다
-- 리뷰 `body` 는 개수 요약 한 줄 + 머지 전에 볼 것
-- 코멘트 `body` 는 `**P2** — 문제` → 근거 → `→ 방향:` 한 줄. ask 는 **무엇이 바뀌었는지(전 / 지금)** 를 먼저 보여주고 묻는다
+- 코멘트 `body` 는 **배지 + 굵은 한 줄 제목** → 근거 문단 → `→ 방향:` 한 줄. ask 는 **무엇이 바뀌었는지(전 / 지금)** 를 먼저 보여주고 묻는다
 - 검증한 사실(실측 · 확인한 응답)이 판정을 받치면 코멘트 끝에 괄호로 붙인다
+- 본문에 백틱 · 한국어 · 줄바꿈이 섞이니 JSON 은 셸 heredoc 말고 스크립트로 만든다(`python3 -I` 로 `json.dump(..., ensure_ascii=False)`)
+
+코멘트 `body` — 배지 색은 P1 `orange` · P2 `yellow` · P3 `lightgrey` · ask `blue`:
+
+```md
+**<sub><sub>![P1 Badge](https://img.shields.io/badge/P1-orange?style=flat)</sub></sub>  만료 직전 동시 요청이 같은 refresh 로 재발급을 겹쳐 부릅니다**
+
+`token()` 은 재발급 중인지 기억하지 않아서 … (재현 조건 · 무엇이 터지는가 · 같은 레포 안의 근거)
+
+→ 방향: 진행 중인 재발급 Promise 를 들고 겹친 호출은 그걸 기다리게 한다.
+```
+
+리뷰 `body` — 개수 요약 + 총평 한 줄, 리뷰한 커밋, 확인하고 문제없던 것(접어서), 못 본 범위:
+
+```md
+### 💡 Claude Review
+
+P1 1 · P2 1 · P3 1 — 한 줄 총평
+
+**Reviewed commit:** `2007b6ac84`
+
+<details><summary>확인하고 문제없던 것</summary>
+
+- 의심했다가 실측으로 닫은 것 — 무엇을 어떻게 확인했는지
+
+</details>
+
+못 본 범위: …
+```
+
+헤더는 `Claude Review` 로 단다 — 다른 봇(Codex 등) 이름을 빌리지 않는다.
+
+"총평 없이" · "스레드만" 이면 리뷰 `body` 를 빼고 `comments` 만 보낸다 — 여전히 리뷰 하나로 묶여 알림은 한 번이고, PR 에는 인라인 스레드만 남는다. 이때 "확인하고 문제없던 것" · "못 본 범위" 는 PR 에 안 남으니 터미널 보고에 쓴다.
 
 ### 어떻게 쓰는가
 
